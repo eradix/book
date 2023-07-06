@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BookRequest;
 use App\Http\Resources\v2\Book\BookCollection;
 use App\Http\Resources\v2\Book\BookResource;
 use App\Models\Book;
-use Illuminate\Http\Request;
+use App\Traits\HttpResponses;
+
 
 class BooksController extends Controller
 {
+    //custom HttpResponses Trait
+    use HttpResponses;
+
     /**
      * Display a listing of the resource.
      */
@@ -24,30 +29,22 @@ class BooksController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(BookRequest $request)
     {
         //validate data
-        $bookData = $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-            'category_id' => 'required',
-            'authors' => 'required | array'
-        ]);
+        $request->validated($request->all());
 
         //create the book
-        $book = Book::create($bookData);
+        $book = Book::create($request->only('title', 'description', 'category_id'));
 
         //get authors
-        $authors = $bookData['authors'];
+        $authors = $request->authors;
 
         //register / attach authors to this newly created book
         $book->authors()->attach($authors);
 
         //return the response message
-        return response()->json([
-            'message' => 'Book successfully created',
-            'data'  => new BookResource($book)
-        ]);
+        return $this->success(new BookResource($book), 'Book successfully created');
     }
 
     /**
@@ -60,9 +57,7 @@ class BooksController extends Controller
 
         //if no book is fetched return error message
         if (!$book) {
-            return response()->json([
-                'message' => 'Error! No books found!',
-            ], 404);
+            return $this->error(null, 'No books found on the specified id.', 404);
         }
 
         //return a new book resource
@@ -72,40 +67,30 @@ class BooksController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(BookRequest $request, string $id)
     {
         //validate data
-        $bookData = $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-            'category_id' => 'required',
-            'authors' => 'required | array'
-        ]);
+        $request->validated($request->all());
 
         //get book
         $book = Book::find($id);
 
         //if no book is fetched return error message
         if (!$book) {
-            return response()->json([
-                'message' => 'Error! No books found!',
-            ], 404);
+            return $this->error(null, 'No books found on the specified id.', 404);
         }
 
         //update the book
-        $book->update($bookData);
+        $book->update($request->only('title', 'description', 'category_id'));
 
         //get authors
-        $authors = $bookData['authors'];
+        $authors = $request->authors;
 
         //update / sync new authors to this book
         $book->authors()->sync($authors);
 
         //return the response message
-        return response()->json([
-            'message' => 'Book successfully updated',
-            'data'  => new BookResource(Book::find($id))
-        ]);
+        return $this->success(new BookResource(Book::find($id)), 'Book successfully updated');
     }
 
     /**
@@ -118,16 +103,12 @@ class BooksController extends Controller
 
         //if no book is fetched return error message
         if (!$book) {
-            return response()->json([
-                'message' => 'Error! No books found!',
-            ], 404);
+            return $this->error(null, 'No books found on the specified id.', 404);
         }
 
         $book->delete();
 
         //return the response message
-        return response()->json([
-            'message' => 'Book successfully deleted',
-        ]);
+        return $this->success($book, 'Book successfully deleted.');
     }
 }
