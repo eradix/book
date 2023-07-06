@@ -1,66 +1,62 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Book (LARAVEL REST API WITH SANCTUM AUTHENTICATION)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Some features of this REST api:
 
-## About Laravel
+- Book model methods (index, store, update, delete, search)
+- Custom Book, Login and User Requests for validation
+- Custom Book and user resource and collection
+- Custom HttpResponse Trait for returning json responses
+- Custom Middleware (basic authentication thru header authorization)
+- Eloquent observers of the Book model events(created, updated, deleted)
+- With Auth methods for register, login, logout
+- With Sanctum authentication
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Steps for cloning this app:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Create a new folder for this project
+- Open terminal and initialize git (git init)
+- git clone https://github.com/eradix/book.git
+- composer install
+- create .env file and setup your environment variables (db_name,ports, user and password)
+- run the migration and seed (php artisan migrate:refresh --seed) so that there is a dummy data that can be test with
+- serve the app (php artisan serve)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+BOOK Rest API endpoints
 
-## Learning Laravel
+BOOKS
+- api/v2/books (GET) -> list all books
+- api/v2/books (POST) -> stores a new book resource
+- api/v2/books/{book} (GET) -> lists a particular book info
+- api/v2/books/{book} (PUT) -> updates specified book resource
+- api/v2/books/{book} (DELETE) -> deletes or remove specified book resource
+- api/v2/books/search/{searchString} (GET) -> search a book via book title, description or author's name
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+AUTH/USER
+- api/v2/login (POST) -> login the user and create a user's token
+- api/v2/logout (POST) -> logging out the user and deletes his current token
+- api/v2/register (POST)  -> stores new user resource and generate a user's token
+  
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Commits/Steps done:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- make migration, model, factories
+- create a BooksController and all its resource method and a book resource and collection
+- creates a custom request for validation and custom httpResponses Trait
+- creates custom middleware (basic auth middleware)
+-   add an eloquent observer (BookObserver) that logs data in created, updated and deleted events
+- creates a login, logout, register functionality, also a UserResource and add sanctum authentication
+- Create a book search functionality via title, description or name of the author
 
-## Laravel Sponsors
+In progress work:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+- Create AuthorController and all its resource method as well as resource and collection
+- create a custom request (AuthorRequest) for validation
+- add an eloquent observer (AuthorObserver) that logs data in created, updated and deleted events
+- Create an author search functionality via first or last name of the author
+- Create CategoryController and all its resource method as well as resource and collection
+- create a custom request CategoryRequest) for validation
+- add an eloquent observer (CategoryObserver) that logs data in created, updated and deleted events
+- Create an Category search functionality via name of the category 
+- Additional in AuthController. Add (update, destroy and search via name or email) methods
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
