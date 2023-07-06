@@ -28,6 +28,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //private routes
 Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v2'], function () {
     Route::resource('/books', BooksController::class);
+    Route::get('books/search/{searchString}', [BooksController::class, 'search']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 

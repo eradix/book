@@ -7,6 +7,7 @@ use App\Http\Resources\v2\Book\BookCollection;
 use App\Http\Resources\v2\Book\BookResource;
 use App\Models\Book;
 use App\Traits\HttpResponses;
+use Illuminate\Database\Eloquent\Builder;
 
 
 
@@ -112,5 +113,27 @@ class BooksController extends Controller
 
         //return the response message
         return $this->success($book, 'Book successfully deleted.');
+    }
+
+    //search books via title, description or name of the author
+    public function search($searchString)
+    {
+        //get all books based on the search string
+        $books = Book::with('authors', 'category')
+            ->where('title', 'like', "%$searchString%")
+            ->orWhere('description', 'like', "%$searchString%")
+            ->orWhereHas('authors', function (Builder $query) use ($searchString) {
+                $query->where('first_name', 'like', "%$searchString%");
+                $query->orWhere('last_name', 'like', "%$searchString%");
+            })
+            ->get();
+
+        //check if search has result, if no result return an error response
+        if ($books->count() === 0) {
+            return $this->error(null, "No books found on the specified search string: {$searchString}.", 404);
+        }
+
+        //return book collection
+        return new BookCollection($books);
     }
 }
