@@ -9,6 +9,7 @@ use App\Models\Book;
 use App\Traits\HttpResponses;
 
 
+
 class BooksController extends Controller
 {
     //custom HttpResponses Trait
@@ -106,6 +107,7 @@ class BooksController extends Controller
             return $this->error(null, 'No books found on the specified id.', 404);
         }
 
+        //delete the book
         $book->delete();
 
         //return the response message

@@ -20,8 +20,8 @@ class BookResource extends JsonResource
             'description' => $this->description,
             'category_name' => $this->category->name,
             'category_id' => $this->category->id,
-            'created_at' => $this->created_at->format('m-d-Y H:00'),
-            'updated_at' => $this->updated_at->format('m-d-Y H:00'),
+            'created_at' => $this->created_at->format('m-d-Y H:i'),
+            'updated_at' => $this->updated_at->format('m-d-Y H:i'),
             'authors' =>  $this->authors->map(function ($author) {
                 return [
                     'author_id' => $author->id,
