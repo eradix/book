@@ -20,6 +20,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 //api routes
-Route::group(['prefix' => 'v2'], function () {
+Route::group(['middleware' => 'verified_token', 'prefix' => 'v2'], function () {
     Route::resource('/books', BooksController::class);
 });
