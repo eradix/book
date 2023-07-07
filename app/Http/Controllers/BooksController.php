@@ -24,6 +24,11 @@ class BooksController extends Controller
         //get all books
         $books = Book::with(['authors', 'category'])->get();
 
+        //if no books available
+        if ($books->count() === 0) {
+            $this->success(null, 'Currently no books available.');
+        }
+
         //return book collection
         return new BookCollection($books);
     }
