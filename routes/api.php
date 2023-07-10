@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BooksController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,8 +28,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 //private routes
 Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v2'], function () {
+    //books
     Route::resource('/books', BooksController::class);
-    Route::get('books/search/{searchString}', [BooksController::class, 'search']);
+    Route::get('/books/search/{searchString}', [BooksController::class, 'search']);
+
+    //authors
+    Route::resource('/authors', AuthorController::class);
+    Route::get('/authors/search/{searchString}', [AuthorController::class, 'search']);
+
+    //auth
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 

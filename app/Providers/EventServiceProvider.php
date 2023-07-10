@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Author;
 use App\Models\Book;
+use App\Observers\AuthorObserver;
 use App\Observers\BookObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -27,6 +29,7 @@ class EventServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Book::observe(BookObserver::class);
+        Author::observe(AuthorObserver::class);
     }
 
     /**
